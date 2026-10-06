@@ -48,7 +48,7 @@ function RouteEffects() {
   const { pathname } = useLocation();
   useEffect(() => {
     const name = pathname.split("/")[1] || "dashboard";
-    document.title = `${name.charAt(0).toUpperCase() + name.slice(1)} · Campo`;
+    document.title = `${name.charAt(0).toUpperCase() + name.slice(1)} · Monitora.G4`;
     window.scrollTo({ top: 0 });
   }, [pathname]);
   return null;

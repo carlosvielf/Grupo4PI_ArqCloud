@@ -46,7 +46,7 @@ function Navigation({ onNavigate }: { onNavigate?: () => void }) {
           <Leaf size={23} aria-hidden="true" />
         </span>
         <span className="brand-copy">
-          campo<span>Monitoramento agrícola</span>
+          Monitora.G4<span>Monitoramento agrícola</span>
         </span>
       </Link>
       <div className="workspace-label">Sua operação</div>
@@ -224,7 +224,7 @@ export function AppLayout() {
           <Outlet />
         </main>
         <footer className="app-footer">
-          <span>Campo · Inteligência para a sua operação</span>
+          <span>Monitora.G4 · Inteligência para a sua operação</span>
           <span>
             {isDemo
               ? "Visualização demonstrativa"

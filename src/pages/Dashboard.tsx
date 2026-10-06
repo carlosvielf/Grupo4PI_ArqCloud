@@ -41,7 +41,7 @@ function exportSummary(rows: string[][]) {
   );
   const a = document.createElement("a");
   a.href = url;
-  a.download = `campo-resumo${isDemo ? "-demonstracao" : ""}.csv`;
+  a.download = `Monitora.G4-resumo${isDemo ? "-demonstracao" : ""}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }

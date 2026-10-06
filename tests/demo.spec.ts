@@ -200,6 +200,6 @@ test("exportar resumo", async ({ page }) => {
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Exportar resumo" }).click();
   expect((await download).suggestedFilename()).toBe(
-    "campo-resumo-demonstracao.csv",
+    "Monitora.G4-resumo-demonstracao.csv",
   );
 });
