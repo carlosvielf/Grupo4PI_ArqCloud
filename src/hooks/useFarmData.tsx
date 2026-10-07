@@ -5,7 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { loadFarmData } from "../services/api";
+import { isDemo, loadFarmData } from "../services/api";
 import type { DataResult } from "../types";
 interface DataContext extends DataResult {
   loading: boolean;
@@ -52,6 +52,19 @@ export function FarmProvider({ children }: { children: ReactNode }) {
       });
     return () => controller.abort();
   }, [version]);
+  useEffect(() => {
+    if (isDemo) return;
+    const events = new EventSource("/api/events");
+    let timer: number | undefined;
+    events.addEventListener("update", () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setVersion((v) => v + 1), 500);
+    });
+    return () => {
+      window.clearTimeout(timer);
+      events.close();
+    };
+  }, []);
   return (
     <Context.Provider
       value={{ ...state, refresh: () => setVersion((v) => v + 1) }}

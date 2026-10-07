@@ -68,6 +68,7 @@ test("modo API usa somente respostas e não expõe campos internos", async ({
   await expect(page.getByText("Demonstração", { exact: true })).toHaveCount(0);
   expect(requests.sort()).toEqual([
     "alertas",
+    "events",
     "imagens",
     "leituras",
     "talhoes",

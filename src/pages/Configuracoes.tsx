@@ -58,21 +58,20 @@ export default function Configuracoes() {
         </section>
         <section className="panel integration-info">
           <CircleHelp size={24} aria-hidden="true" />
-          <h2>Conectar a operação real</h2>
+          <h2>Integração de dados do Grupo 4</h2>
           <p>
-            O backend não foi fornecido neste workspace. A integração precisa
-            ser validada com os endpoints e formatos reais antes do uso
-            operacional.
+            O backend consulta os cadastros no MariaDB, históricos no MongoDB,
+            estado atual no Redis e imagens privadas no MinIO.
           </p>
           <p>
-            O responsável técnico encontra as instruções de configuração no
-            README do projeto. A mudança de ambiente exige reiniciar o frontend.
+            Eventos MQTT do namespace do Grupo 4 são consumidos no backend e
+            notificam o dashboard por SSE quando afetam alertas ou telemetria.
           </p>
           <div className="security-note">
             <ShieldCheck size={19} aria-hidden="true" />
             <span>
-              O frontend não acessa MongoDB nem armazena credenciais de S3 ou
-              MinIO. As imagens devem ser disponibilizadas pelo backend.
+              O frontend não recebe credenciais. Imagens privadas são mediadas
+              pela API e todas as fontes são fixadas no escopo do Grupo 4.
             </span>
           </div>
         </section>

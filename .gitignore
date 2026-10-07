@@ -6,4 +6,8 @@ dist/
 test-results/
 playwright-report/
 .browser/
+.runtime/
+.audit-report.json
 *.log
+PI2026-T2-acessos*
+.env

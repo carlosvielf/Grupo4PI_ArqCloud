@@ -1,5 +1,7 @@
 # Validação da implementação
 
+> Registro histórico da versão demonstrativa em 06/10/2026. A validação atual da integração real está em [`INTEGRACAO_DADOS_GRUPO4.md`](../INTEGRACAO_DADOS_GRUPO4.md) e substitui as afirmações abaixo sobre ausência de backend.
+
 Verificação realizada em 6 de outubro de 2026 neste workspace Windows.
 
 ## Resultado

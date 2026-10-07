@@ -1,12 +1,12 @@
 import type { DataResult, FarmData, ResourceIssue } from "../types";
 import { adapters } from "./adapters";
-export const isDemo = import.meta.env.VITE_DATA_SOURCE !== "api";
+export const isDemo = import.meta.env.VITE_DATA_SOURCE === "demo";
 export const endpointConfig = {
-  talhoes: import.meta.env.VITE_API_TALHOES_PATH,
-  imagens: import.meta.env.VITE_API_IMAGENS_PATH,
-  alertas: import.meta.env.VITE_API_ALERTAS_PATH,
-  leituras: import.meta.env.VITE_API_LEITURAS_PATH,
-  telemetria: import.meta.env.VITE_API_TELEMETRIA_PATH,
+  talhoes: import.meta.env.VITE_API_TALHOES_PATH || "/api/talhoes",
+  imagens: import.meta.env.VITE_API_IMAGENS_PATH || "/api/imagens",
+  alertas: import.meta.env.VITE_API_ALERTAS_PATH || "/api/alertas",
+  leituras: import.meta.env.VITE_API_LEITURAS_PATH || "/api/leituras",
+  telemetria: import.meta.env.VITE_API_TELEMETRIA_PATH || "/api/telemetria",
 };
 const empty: FarmData = {
   talhoes: [],
@@ -65,18 +65,5 @@ export async function loadFarmData(signal: AbortSignal): Promise<DataResult> {
       },
     ),
   );
-  // Sem endpoint de talhões, é possível descobrir códigos nos registros disponíveis.
-  if (!endpointConfig.talhoes) {
-    const codes = new Set(
-      [...data.imagens, ...data.leituras].map((r) => r.talhao),
-    );
-    if (codes.size) {
-      data.talhoes = [...codes].map((codigo) => ({ codigo }));
-      issues.splice(
-        issues.findIndex((i) => i.resource === "talhoes"),
-        1,
-      );
-    }
-  }
   return { data, issues };
 }
