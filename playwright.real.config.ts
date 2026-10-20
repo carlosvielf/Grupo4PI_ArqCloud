@@ -5,6 +5,7 @@ export default defineConfig({
   testMatch: "real.spec.ts",
   workers: 1,
   timeout: 60_000,
+  expect: { timeout: 30_000 },
   reporter: "list",
   use: {
     baseURL: "http://127.0.0.1:5175",

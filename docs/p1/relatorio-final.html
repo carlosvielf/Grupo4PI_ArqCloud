@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>P1 IAL214 — Grupo 4</title>
+<style>
+@page { size: A4; margin: 18mm 17mm 18mm 20mm; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; color: #17231d; font-size: 10.5pt; line-height: 1.38; }
+h1 { color: #174b32; font-size: 20pt; margin: 24pt 0 10pt; break-after: avoid; }
+h2 { color: #225d40; font-size: 15pt; margin: 18pt 0 8pt; break-after: avoid; }
+h3 { color: #2f674b; font-size: 12.5pt; margin: 14pt 0 6pt; break-after: avoid; }
+p { margin: 0 0 7pt; text-align: justify; }
+table { width: 100%; border-collapse: collapse; margin: 8pt 0 12pt; font-size: 9pt; break-inside: avoid; }
+th, td { border: 1px solid #aebdb4; padding: 5pt; vertical-align: top; }
+th { background: #e9f2ec; color: #174b32; text-align: left; }
+code, pre { font-family: Consolas, monospace; }
+pre { white-space: pre-wrap; background: #f3f5f4; border-left: 4px solid #4c8a68; padding: 8pt; font-size: 8.3pt; line-height: 1.28; break-inside: avoid; }
+.cover { height: 245mm; display: flex; flex-direction: column; text-align: center; break-after: page; }
+.cover .school { font-weight: 700; font-size: 18pt; margin-top: 10mm; }
+.cover .course { margin-top: 4mm; color: #496056; }
+.cover .p1 { margin-top: 28mm; font-size: 44pt; font-weight: 800; color: #174b32; }
+.cover .name { font-size: 25pt; font-weight: 700; margin: 8mm 12mm 2mm; }
+.cover .group { margin-top: 14mm; font-size: 16pt; font-weight: 700; }
+.cover table { margin: 9mm auto 0; width: 82%; font-size: 10pt; }
+.cover .prof { margin-top: auto; }
+.cover .date { margin-top: 8mm; }
+.pagebreak { break-before: page; }
+.figure { margin: 10pt 0 14pt; break-inside: avoid; text-align: center; }
+.figure img { max-width: 100%; max-height: 225mm; object-fit: contain; }
+.figure.arch img { max-height: 150mm; }
+.caption { font-size: 9pt; color: #52635a; margin-top: 4pt; text-align: center; }
+.note { background: #fff8e8; border: 1px solid #d5b66e; padding: 8pt; margin: 8pt 0; }
+.ok { color: #176b3a; font-weight: 700; }.pending { color: #915c00; font-weight: 700; }
+.toc p { text-align: left; margin: 4pt 0; }
+.small { font-size: 8.5pt; color: #4c5f54; }
+</style>
+</head>
+<body>
+<section class="cover">
+  <div class="school">FATEC POMPEIA</div>
+  <div class="course">Projeto Integrador de Arquiteturas Cloud para Big Data · IAL214 · BIG_DATA_AGRONEGÓCIO_T</div>
+  <div class="p1">P1</div>
+  <div class="name">Estudo dos dados, arquitetura e escopo do sistema web</div>
+  <div>Avaliação em grupo · entrega individual · 2026.2</div>
+  <div class="group">Grupo 4 — Fazenda São João</div>
+  <table>
+    <thead><tr><th>Nº</th><th>Integrante</th><th>RA</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>CARLOS ROBERTO VIEL FILHO</td><td>2591262422008</td></tr>
+      <tr><td>2</td><td>GABRIEL RIBAS FERREIRA DE ALMEIDA</td><td>2591262422003</td></tr>
+      <tr><td>3</td><td>OLDINEY NATANAEL GALVÃO</td><td>2591262422021</td></tr>
+      <tr><td>4</td><td>MATHEUS MÁXIMO DANELUTI PAIVA</td><td>2591262422022</td></tr>
+    </tbody>
+  </table>
+  <div class="prof">Prof. Allan Lincoln Rodrigues Siriani</div>
+  <div class="date">Pompeia, 07/10/2026</div>
+</section>
+
+<section class="toc">
+<h1>Sumário</h1>
+<p>1. Grupo e fazenda</p><p>2. Estudo dos dados</p><p>2.1 Consulta 1 — Composição da fazenda</p><p>2.2 Consulta 2 — Evolução do NDVI</p><p>2.3 Consulta 3 — Alertas de solo seco</p><p>2.4 Consulta 4 — Perfil das máquinas</p><p>2.5 Consulta 5 — Umidade atual</p><p>3. Qualidade dos dados</p><p>4. Arquitetura atual</p><p>5. Escopo do sistema web</p><p>5.1 Problema e usuários</p><p>5.2 Requisitos</p><p>5.3 Telas</p><p>5.4 De onde vem cada informação</p><p>6. Arquitetura proposta e plano</p><p>6.1 Arquitetura proposta</p><p>6.2 Cronograma até a P2</p><p>6.3 Divisão de tarefas</p><p>Declaração</p>
+</section>
+
+<h1 class="pagebreak">1. Grupo e fazenda</h1>
+<table><tbody>
+<tr><th>Grupo</th><td>Grupo 4</td></tr>
+<tr><th>Fazenda</th><td>Fazenda São João — Quintana/SP — 296,91 ha</td></tr>
+<tr><th>Culturas</th><td>Cana-de-açúcar (T01–T04) e soja (T05–T06)</td></tr>
+<tr><th>Repositório GitHub</th><td>https://github.com/carlosvielf/Grupo4PI_ArqCloud.git</td></tr>
+<tr><th>Portas configuradas</th><td>API 3001; MariaDB 3307; MongoDB 27018; Redis 6380; MQTT TCP 1884; MQTT WebSocket 9012; MinIO 9010; Vite local 5173/5175</td></tr>
+</tbody></table>
+<p>Os nomes da fazenda, município, área e culturas vieram da Consulta 1 no MariaDB e foram confrontados com o hash <code>grupo4:fazenda</code> e os hashes de talhões do Redis. A relação de integrantes e RAs foi informada diretamente pelo grupo para esta versão final.</p>
+
+<h1>2. Estudo dos dados</h1>
+<table>
+<thead><tr><th>Serviço</th><th>O que guarda</th><th>Quantidade</th><th>Período</th><th>Consulta usada</th></tr></thead>
+<tbody>
+<tr><td>MariaDB</td><td>fazenda, talhões, culturas, pessoas, máquinas, safras, operações, estoque, clientes e vendas</td><td>12 tabelas; 559 linhas</td><td>15/03/2021–18/01/2027; registros futuros tratados como planejamento/qualidade</td><td><code>information_schema</code> + <code>SELECT COUNT(*), MIN(), MAX()</code></td></tr>
+<tr><td>MongoDB</td><td>leituras de sensores, telemetria, alertas e catálogo NDVI</td><td>4 coleções; 87.174 documentos</td><td>01/06/2026–07/10/2026</td><td><code>countDocuments</code> e aggregations por coleção</td></tr>
+<tr><td>Redis</td><td>estado atual, talhões, stream, alertas recentes, ranking e contadores</td><td>19 chaves <code>grupo4:*</code> (76 no banco compartilhado)</td><td>estado observado em 07/10; chaves sem histórico próprio</td><td><code>SCAN MATCH grupo4:*</code>, <code>TYPE</code>, <code>TTL</code></td></tr>
+<tr><td>MQTT</td><td>status e mensagens de sete sensores</td><td>9 mensagens em 75,023 s; 8 tópicos únicos</td><td>janela passiva de 07/10/2026; ciclos ≈60 s</td><td><code>SUBSCRIBE fazenda/grupo4/#</code>, QoS 0</td></tr>
+<tr><td>MinIO</td><td>48 PNGs NDVI e um laudo CSV</td><td>49 objetos; 3.299.616 bytes</td><td>imagens 05/06–25/09/2026; laudo 2026</td><td><code>bucketExists</code> + <code>listObjectsV2</code></td></tr>
+</tbody></table>
+<p class="small">Contagens congeladas em 08/10/2026 00:27:23 UTC. A coleção <code>leituras</code> é alimentada por fluxo e pode crescer.</p>
+
+<h2>2.1 Consulta 1 — Qual é a composição atual da fazenda?</h2>
+<p><strong>Pergunta.</strong> Quais talhões, áreas e culturas compõem a Fazenda São João?</p>
+<pre>SELECT f.nome, f.municipio, f.uf, f.area_total_ha,
+       t.codigo AS talhao, t.area_ha, c.nome AS cultura
+FROM fazenda f JOIN talhao t ON t.fazenda_id=f.id
+LEFT JOIN cultura c ON c.id=t.cultura_atual_id ORDER BY t.codigo;</pre>
+<table><thead><tr><th>Talhão</th><th>Área (ha)</th><th>Cultura</th></tr></thead><tbody><tr><td>T01</td><td>36,53</td><td>Cana-de-açúcar</td></tr><tr><td>T02</td><td>52,00</td><td>Cana-de-açúcar</td></tr><tr><td>T03</td><td>46,62</td><td>Cana-de-açúcar</td></tr><tr><td>T04</td><td>55,19</td><td>Cana-de-açúcar</td></tr><tr><td>T05</td><td>24,30</td><td>Soja</td></tr><tr><td>T06</td><td>36,98</td><td>Soja</td></tr></tbody></table>
+<p><strong>Resultado e interpretação.</strong> Há seis talhões e 251,62 ha produtivos cadastrados. A fazenda tem 296,91 ha; 45,29 ha não estão associados a esses talhões e podem representar reserva, vias ou outra área não cadastrada. Sem evidência adicional, a diferença não foi rotulada como erro.</p>
+
+<h2>2.2 Consulta 2 — Como o NDVI evoluiu por talhão?</h2>
+<p><strong>Pergunta.</strong> Qual a diferença entre a primeira e a última leitura NDVI de cada talhão?</p>
+<pre>db.imagens.aggregate([
+ {$match:{ndvi_medio:{$type:"number"},data:{$type:"date"}}},
+ {$sort:{talhao:1,data:1}},
+ {$group:{_id:"$talhao",leituras:{$sum:1},
+   primeiro_ndvi:{$first:"$ndvi_medio"},ultimo_ndvi:{$last:"$ndvi_medio"},
+   media_ndvi:{$avg:"$ndvi_medio"}}}
+])</pre>
+<table><thead><tr><th>Talhão</th><th>Leituras</th><th>Primeiro</th><th>Último</th><th>Variação</th></tr></thead><tbody><tr><td>T01</td><td>8</td><td>0,298</td><td>0,648</td><td>+0,350</td></tr><tr><td>T02</td><td>8</td><td>0,312</td><td>0,662</td><td>+0,350</td></tr><tr><td>T03</td><td>8</td><td>0,295</td><td>0,645</td><td>+0,350</td></tr><tr><td>T04</td><td>8</td><td>0,237</td><td>0,643</td><td>+0,406</td></tr><tr><td>T05</td><td>8</td><td>0,490</td><td>0,150</td><td>−0,340</td></tr><tr><td>T06</td><td>8</td><td>0,446</td><td>0,159</td><td>−0,287</td></tr></tbody></table>
+<p><strong>Resultado e interpretação.</strong> T01–T04 melhoraram, enquanto T05 e T06 encerraram o período com forte queda e os menores índices. Eles devem ser destacados para inspeção, sem transformar NDVI isolado em diagnóstico agronômico.</p>
+
+<h2>2.3 Consulta 3 — Onde se concentram os alertas de solo seco?</h2>
+<p><strong>Pergunta.</strong> Quantas ocorrências de solo seco há por talhão e quantas estão resolvidas?</p>
+<pre>db.alertas.aggregate([
+ {$match:{tipo:"solo_seco"}},
+ {$group:{_id:"$talhao",ocorrencias:{$sum:1},
+   resolvidas:{$sum:{$cond:["$resolvido",1,0]}},
+   primeira:{$min:"$ts"},ultima:{$max:"$ts"}}},
+ {$sort:{ocorrencias:-1,_id:1}}
+])</pre>
+<table><thead><tr><th>Talhão</th><th>Ocorrências</th><th>Resolvidas</th></tr></thead><tbody><tr><td>T01</td><td>47</td><td>47</td></tr><tr><td>T02</td><td>47</td><td>47</td></tr><tr><td>T04</td><td>45</td><td>45</td></tr><tr><td>T03</td><td>35</td><td>35</td></tr><tr><td>T05</td><td>33</td><td>33</td></tr><tr><td>T06</td><td>33</td><td>33</td></tr></tbody></table>
+<p><strong>Resultado e interpretação.</strong> As 240 ocorrências históricas estavam resolvidas. T01 e T02 concentram 39,2% dos alertas, informação útil para priorizar análise de recorrência e manejo.</p>
+
+<h2>2.4 Consulta 4 — Qual é o perfil operacional das máquinas?</h2>
+<p><strong>Pergunta.</strong> Quais máquinas possuem telemetria e quais foram suas médias e extremos?</p>
+<pre>db.telemetria_maquinas.aggregate([
+ {$group:{_id:"$maquina",registros:{$sum:1},inicio:{$min:"$ts"},fim:{$max:"$ts"},
+  velocidade_media_kmh:{$avg:"$velocidade_kmh"},
+  combustivel_medio_pct:{$avg:"$combustivel_pct"},
+  temperatura_maxima_c:{$max:"$temp_motor_c"}}},
+ {$sort:{registros:-1,_id:1}}
+])</pre>
+<table><thead><tr><th>Máquina</th><th>Registros</th><th>Velocidade média</th><th>Combustível médio</th><th>Máx. motor</th></tr></thead><tbody><tr><td>M05</td><td>3.685</td><td>5,00 km/h</td><td>56,46%</td><td>97,3 °C</td></tr><tr><td>M03</td><td>1.573</td><td>15,98 km/h</td><td>81,09%</td><td>95,9 °C</td></tr><tr><td>M01</td><td>524</td><td>6,99 km/h</td><td>85,92%</td><td>95,9 °C</td></tr></tbody></table>
+<p><strong>Resultado e interpretação.</strong> Só três das seis máquinas cadastradas têm telemetria. M05 domina o volume e atingiu a maior temperatura; o dashboard deve separar ausência de telemetria de “máquina offline”.</p>
+
+<h2>2.5 Consulta 5 — Qual é a umidade atual do solo?</h2>
+<p><strong>Pergunta.</strong> Quais valores mais recentes de umidade a 10 e 30 cm existem para cada sonda?</p>
+<pre>SCAN MATCH grupo4:sensor:SS-* COUNT 100
+HGETALL &lt;cada chave encontrada&gt;</pre>
+<table><thead><tr><th>Sonda</th><th>Umidade 10 cm</th><th>Umidade 30 cm</th></tr></thead><tbody><tr><td>SS-01</td><td>11,01%</td><td>11,95%</td></tr><tr><td>SS-02</td><td>11,03%</td><td>11,60%</td></tr><tr><td>SS-03</td><td>11,20%</td><td>11,90%</td></tr><tr><td>SS-04</td><td>11,38%</td><td>11,96%</td></tr><tr><td>SS-05</td><td>10,76%</td><td>12,18%</td></tr><tr><td>SS-06</td><td>11,10%</td><td>11,85%</td></tr></tbody></table>
+<p><strong>Resultado e interpretação.</strong> Na coleta, a faixa a 10 cm foi 10,76%–11,38% e a 30 cm foi 11,60%–12,18%. O Redis fornece o estado mais recente; análises históricas devem usar o MongoDB. Valores mudam em fluxo, portanto o horário precisa acompanhar a exibição.</p>
+
+<h1>3. Qualidade dos dados</h1>
+<table><thead><tr><th>Problema</th><th>Como foi detectado</th><th>Registros afetados</th><th>Tratamento no sistema</th></tr></thead><tbody>
+<tr><td>Umidade a 10 cm impossível (`-1` ou `999`)</td><td><code>countDocuments({$or:[{"valores.umidade_10cm_pct":{$lt:0}},{...:{$gt:100}}]})</code></td><td>12: cinco `-1`, sete `999`</td><td>converter em ausência; não agregar; exibir lacuna e aviso</td></tr>
+<tr><td>Duplicidade de sensor + timestamp</td><td><code>$group</code> por <code>sensor, ts</code>, depois <code>quantidade &gt; 1</code></td><td>644 linhas em 322 pares; 322 excedentes</td><td>deduplicar na leitura e criar unicidade na ingestão futura</td></tr>
+<tr><td>Datas posteriores à auditoria</td><td><code>WHERE data &gt; CURRENT_DATE()</code></td><td>20 saídas de estoque; 10 operações; 2 plantios planejados</td><td>rotular como planejado; excluir de indicadores realizados</td></tr>
+<tr><td>Estado Redis sem expiração</td><td><code>TTL</code> nas 19 chaves <code>grupo4:*</code></td><td>19</td><td>calcular frescor pelo timestamp e adotar TTL para estado efêmero</td></tr>
+<tr><td>Origem simulada das imagens</td><td>agrupamento de <code>imagens.satelite</code></td><td>48 de 48: `Sentinel-2 (simulado)`</td><td>manter rótulo de simulação; não declarar captura orbital real</td></tr>
+</tbody></table>
+<p>Testes com zero ocorrências: NDVI e nuvem fora da faixa, telemetria negativa, combustível fora de 0–100, operação com fim anterior ao início, colheita anterior ao plantio, áreas/vendas não positivas, códigos de talhão duplicados e divergências entre catálogo MongoDB e PNGs MinIO.</p>
+
+<h1 class="pagebreak">4. Arquitetura atual</h1>
+<div class="figure arch"><img src="evidencias/arquitetura-atual.png"><div class="caption">Figura 1 — Arquitetura atual dos dados da Fazenda São João.</div></div>
+<p>Os sensores publicam JSON no broker; o backend assina somente o prefixo do Grupo 4 e, com persistência habilitada, faz upsert idempotente no MongoDB. A API consulta MariaDB, MongoDB, Redis e MinIO; o navegador recebe JSON, PNG mediado e eventos SSE. A origem/carga inicial dos acervos persistidos não está no repositório e foi explicitamente indicada no diagrama.</p>
+<p>MariaDB é adequado às relações e integridade de cadastros/transações; MongoDB acomoda séries e eventos com formatos diferentes; Redis atende estado e estruturas rápidas; MinIO guarda binários; MQTT desacopla sensores e consumidor. O backend protege as credenciais e normaliza schemas antes da UI.</p>
+
+<h1>5. Escopo do sistema web</h1>
+<h2>5.1 Problema e usuários</h2>
+<p><strong>Problema.</strong> Dados de campo, imagens, alertas e máquinas estão distribuídos entre cinco serviços e contêm valores inválidos, duplicatas e diferenças de atualização. Sem uma visão integrada, o responsável precisa cruzar fontes e pode interpretar estado antigo ou dado sentinela como medição válida.</p>
+<p><strong>Persona.</strong> Gerente de operação agrícola da Fazenda São João, com apoio de agrônomo. Hoje ele consulta cadastros, históricos e estado recente separadamente. O Monitora.G4 centraliza os dados rastreáveis, sinaliza qualidade/frescor e permite navegar do panorama ao talhão, imagem, alerta ou máquina.</p>
+<p><strong>Escopo até a P2.</strong> Consolidar as telas já existentes de dashboard, talhões, imagens/NDVI, alertas e telemetria; adicionar tratamento dos problemas medidos e estado atual das sondas. Custos, estoque, vendas e interpretação do laudo CSV ficam fora do MVP.</p>
+
+<h2>5.2 Requisitos</h2>
+<table><thead><tr><th>ID</th><th>Tipo</th><th>Requisito testável</th></tr></thead><tbody>
+<tr><td>RF01</td><td>funcional</td><td>Exibir os seis talhões com área, cultura, último NDVI válido e data da leitura, ocultando `-1`/`999` e duplicatas das métricas.</td></tr>
+<tr><td>RF02</td><td>funcional</td><td>Permitir consultar oito imagens NDVI por talhão, com metadados MongoDB e conteúdo PNG entregue pelo backend a partir do MinIO.</td></tr>
+<tr><td>RF03</td><td>funcional</td><td>Listar/filtrar alertas históricos e recentes e indicar status, severidade, talhão e horário.</td></tr>
+<tr><td>RF04</td><td>funcional</td><td>Exibir telemetria das máquinas M01, M03 e M05 por período e métrica; máquinas sem amostras devem aparecer como “sem telemetria”, não “offline”.</td></tr>
+<tr><td>RF05</td><td>funcional</td><td>Mostrar estado e frescor das seis sondas Redis/MQTT, marcando leitura desatualizada conforme timestamp.</td></tr>
+<tr><td>RNF01</td><td>não funcional</td><td>Manter senhas e tokens apenas em variáveis do backend; nenhum segredo pode aparecer em `VITE_*`, bundle, Git, logs ou respostas.</td></tr>
+<tr><td>RNF02</td><td>não funcional</td><td>Responder cada endpoint em até 15 s ou apresentar erro parcial sem fallback para mock; validar por teste integrado.</td></tr>
+<tr><td>RNF03</td><td>não funcional</td><td>Atender WCAG 2.1 AA nas cinco telas principais e manter layout sem rolagem horizontal em 390–1440 px.</td></tr>
+</tbody></table>
+
+<h2 class="pagebreak">5.3 Telas</h2>
+<div class="figure"><img src="evidencias/tela-1-dashboard.png"><div class="caption">Figura 2 — Tela 1: Dashboard real em modo API.</div></div>
+<div class="figure pagebreak"><img src="evidencias/tela-2-talhoes.png"><div class="caption">Figura 3 — Tela 2: Talhões reais.</div></div>
+<div class="figure pagebreak"><img src="evidencias/tela-3-imagens.png"><div class="caption">Figura 4 — Tela 3: Galeria de imagens do MongoDB/MinIO.</div></div>
+<div class="figure pagebreak"><img src="evidencias/tela-4-telemetria.png"><div class="caption">Figura 5 — Tela 4: Telemetria histórica.</div></div>
+<div class="figure pagebreak"><img src="evidencias/tela-5-alertas.png"><div class="caption">Figura 6 — Tela 5: Central de alertas.</div></div>
+
+<h2>5.4 De onde vem cada informação</h2>
+<table><thead><tr><th>Tela</th><th>Informação exibida</th><th>Serviço de origem</th><th>Coleção / tabela / chave / tópico</th></tr></thead><tbody>
+<tr><td>Dashboard/Talhões</td><td>código, área e cultura</td><td>MariaDB</td><td><code>talhao JOIN cultura</code></td></tr>
+<tr><td>Dashboard/Talhões</td><td>último NDVI e evolução</td><td>MongoDB</td><td><code>imagens.talhao/data/ndvi_medio</code></td></tr>
+<tr><td>Dashboard/Alertas</td><td>histórico de ocorrências</td><td>MongoDB</td><td><code>alertas</code></td></tr>
+<tr><td>Dashboard/Alertas</td><td>alertas recentes</td><td>Redis</td><td><code>grupo4:alertas:recentes</code></td></tr>
+<tr><td>Imagens</td><td>catálogo, data, tipo e satélite</td><td>MongoDB</td><td><code>imagens</code></td></tr>
+<tr><td>Imagens</td><td>conteúdo PNG</td><td>MinIO</td><td>bucket <code>grupo4</code>; <code>imagens.objeto</code></td></tr>
+<tr><td>Máquinas/Telemetria</td><td>nome/tipo e métricas</td><td>MariaDB + MongoDB</td><td><code>maquina</code> + <code>telemetria_maquinas</code></td></tr>
+<tr><td>Dashboard/Talhão (P2)</td><td>umidade e frescor atual</td><td>Redis + MQTT</td><td><code>grupo4:sensor:SS-*</code>; <code>fazenda/grupo4/sensores/*</code></td></tr>
+</tbody></table>
+
+<h1 class="pagebreak">6. Arquitetura proposta e plano</h1>
+<h2>6.1 Arquitetura proposta</h2>
+<div class="figure arch"><img src="evidencias/arquitetura-proposta.png"><div class="caption">Figura 7 — Arquitetura proposta do sistema até a P2.</div></div>
+<p><strong>Decisão: monólito modular.</strong> Um único container Node servirá o frontend compilado, a API e o consumidor MQTT na porta 3001. A equipe acadêmica prevista pela atividade é pequena e o prazo é de seis semanas; microsserviços adicionariam deploy, rede, observabilidade e coordenação sem uma necessidade de escala comprovada. Módulos internos mantêm separação por serviço sem multiplicar processos.</p>
+<p>MariaDB 3307, MongoDB 27018, Redis 6380, MQTT 1884/9012 e MinIO 9010 permanecem serviços externos do Grupo 4. Credenciais entram por variáveis protegidas no runtime; apenas configurações públicas podem usar `VITE_*`. O consumidor assina `fazenda/grupo4/#`, valida o payload, faz upsert idempotente e sinaliza atualizações por SSE. A camada de qualidade descarta sentinelas e duplicatas das métricas, distingue planejamento de realizado e avalia o frescor do Redis.</p>
+
+<h2>6.2 Cronograma até a P2 (17/11)</h2>
+<table><thead><tr><th>Semana</th><th>Entrega do grupo</th></tr></thead><tbody>
+<tr><td>08/10–14/10</td><td>Fechar P1; priorizar backlog; criar testes para 12 sentinelas, 322 duplicatas, datas futuras e frescor Redis.</td></tr>
+<tr><td>15/10–21/10</td><td>Implementar normalização/deduplicação na API; distinguir planejado/realizado; criar Dockerfile do monólito e política de secrets.</td></tr>
+<tr><td>22/10–28/10</td><td>Integrar estado Redis/MQTT das seis sondas ao dashboard/detalhe; exibir timestamp e estado desatualizado; testes de contrato.</td></tr>
+<tr><td>29/10–04/11</td><td>Revisar alertas, telemetria e paginação/limites; tolerância a falha parcial; validar imagem privada e ausência de exposição de segredos.</td></tr>
+<tr><td>05/11–11/11</td><td>Deploy de homologação; E2E real, acessibilidade, responsividade e desempenho; validação com a persona e correções.</td></tr>
+<tr><td>12/11–17/11</td><td>Correções finais, sistema no ar, relatório atualizado, vídeo, ensaio e entrega P2.</td></tr>
+</tbody></table>
+
+<h2>6.3 Divisão de tarefas</h2>
+<table><thead><tr><th>Integrante</th><th>Responsabilidades nesta P1 e no projeto</th></tr></thead><tbody>
+<tr><td>CARLOS ROBERTO VIEL FILHO</td><td>Frontend e experiência: integrar o estado das sondas ao dashboard/detalhe, revisar alertas e telemetria, garantir responsividade e acessibilidade e apoiar as correções finais.</td></tr>
+<tr><td>GABRIEL RIBAS FERREIRA DE ALMEIDA</td><td>Backend e dados: implementar normalização/deduplicação, separar planejado de realizado, consolidar API e fluxo MQTT/Redis e manter os testes de integração dos serviços.</td></tr>
+<tr><td>OLDINEY NATANAEL GALVÃO</td><td>Infraestrutura e segurança: criar o container do monólito, configurar variáveis/secrets, preparar homologação e sistema no ar, acompanhar disponibilidade e falhas parciais.</td></tr>
+<tr><td>MATHEUS MÁXIMO DANELUTI PAIVA</td><td>Qualidade e entrega: executar testes de contrato, E2E, acessibilidade e desempenho; organizar evidências; revisar relatório; produzir o vídeo e coordenar a entrega P2.</td></tr>
+</tbody></table>
+
+<h1>Declaração</h1>
+<p>Declaramos que este documento foi elaborado pelos integrantes listados na capa, que as consultas e resultados apresentados foram executados sobre os dados do nosso grupo, e que a contribuição de cada integrante está descrita na seção 6.3.</p>
+</body>
+</html>

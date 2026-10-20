@@ -11,3 +11,12 @@ playwright-report/
 *.log
 PI2026-T2-acessos*
 .env
+P1_IAL214_template.docx
+P1_IAL214_template.pdf
+P1_IAL214_Grupo*.docx
+P1_IAL214_Grupo*.pdf
+AUDITORIA_P1*
+.agents
+/ARTIGO_LINKEDIN_MONGODB_VS_RELACIONAL.md
+/EVIDENCIAS_ARTIGO.md
+/INTEGRACAO_DADOS_GRUPO4.md

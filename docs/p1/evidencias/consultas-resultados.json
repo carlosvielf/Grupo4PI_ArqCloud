@@ -1,0 +1,1088 @@
+{
+  "generatedAt": "2026-10-08T00:27:23.841Z",
+  "scope": "grupo4",
+  "mode": "somente leitura",
+  "queries": {
+    "q1_fazenda_talhoes": {
+      "question": "Qual é a composição atual da fazenda por talhão, área e cultura?",
+      "service": "MariaDB",
+      "query": "SELECT f.nome, f.municipio, f.uf, f.area_total_ha,\n                          t.codigo AS talhao, t.area_ha,\n                          COALESCE(c.nome, 'sem cultura cadastrada') AS cultura\n                     FROM fazenda f\n                     JOIN talhao t ON t.fazenda_id = f.id\n                LEFT JOIN cultura c ON c.id = t.cultura_atual_id\n                 ORDER BY t.codigo",
+      "result": [
+        {
+          "nome": "Fazenda São João",
+          "municipio": "Quintana",
+          "uf": "SP",
+          "area_total_ha": "296.91",
+          "talhao": "T01",
+          "area_ha": "36.53",
+          "cultura": "Cana-de-açúcar"
+        },
+        {
+          "nome": "Fazenda São João",
+          "municipio": "Quintana",
+          "uf": "SP",
+          "area_total_ha": "296.91",
+          "talhao": "T02",
+          "area_ha": "52.00",
+          "cultura": "Cana-de-açúcar"
+        },
+        {
+          "nome": "Fazenda São João",
+          "municipio": "Quintana",
+          "uf": "SP",
+          "area_total_ha": "296.91",
+          "talhao": "T03",
+          "area_ha": "46.62",
+          "cultura": "Cana-de-açúcar"
+        },
+        {
+          "nome": "Fazenda São João",
+          "municipio": "Quintana",
+          "uf": "SP",
+          "area_total_ha": "296.91",
+          "talhao": "T04",
+          "area_ha": "55.19",
+          "cultura": "Cana-de-açúcar"
+        },
+        {
+          "nome": "Fazenda São João",
+          "municipio": "Quintana",
+          "uf": "SP",
+          "area_total_ha": "296.91",
+          "talhao": "T05",
+          "area_ha": "24.30",
+          "cultura": "Soja"
+        },
+        {
+          "nome": "Fazenda São João",
+          "municipio": "Quintana",
+          "uf": "SP",
+          "area_total_ha": "296.91",
+          "talhao": "T06",
+          "area_ha": "36.98",
+          "cultura": "Soja"
+        }
+      ]
+    },
+    "q2_evolucao_ndvi": {
+      "question": "Como o NDVI de cada talhão evoluiu entre a primeira e a última imagem disponível?",
+      "service": "MongoDB",
+      "collection": "imagens",
+      "pipeline": [
+        {
+          "$match": {
+            "ndvi_medio": {
+              "$type": "number"
+            },
+            "data": {
+              "$type": "date"
+            }
+          }
+        },
+        {
+          "$sort": {
+            "talhao": 1,
+            "data": 1
+          }
+        },
+        {
+          "$group": {
+            "_id": "$talhao",
+            "leituras": {
+              "$sum": 1
+            },
+            "primeira_data": {
+              "$first": "$data"
+            },
+            "primeiro_ndvi": {
+              "$first": "$ndvi_medio"
+            },
+            "ultima_data": {
+              "$last": "$data"
+            },
+            "ultimo_ndvi": {
+              "$last": "$ndvi_medio"
+            },
+            "media_ndvi": {
+              "$avg": "$ndvi_medio"
+            }
+          }
+        },
+        {
+          "$project": {
+            "_id": 0,
+            "talhao": "$_id",
+            "leituras": 1,
+            "primeira_data": 1,
+            "primeiro_ndvi": 1,
+            "ultima_data": 1,
+            "ultimo_ndvi": 1,
+            "media_ndvi": {
+              "$round": [
+                "$media_ndvi",
+                3
+              ]
+            },
+            "variacao": {
+              "$round": [
+                {
+                  "$subtract": [
+                    "$ultimo_ndvi",
+                    "$primeiro_ndvi"
+                  ]
+                },
+                3
+              ]
+            }
+          }
+        },
+        {
+          "$sort": {
+            "talhao": 1
+          }
+        }
+      ],
+      "result": [
+        {
+          "leituras": 8,
+          "primeira_data": "2026-06-05T13:30:00.000Z",
+          "primeiro_ndvi": 0.298,
+          "ultima_data": "2026-09-25T13:30:00.000Z",
+          "ultimo_ndvi": 0.648,
+          "talhao": "T01",
+          "media_ndvi": 0.462,
+          "variacao": 0.35
+        },
+        {
+          "leituras": 8,
+          "primeira_data": "2026-06-05T13:30:00.000Z",
+          "primeiro_ndvi": 0.312,
+          "ultima_data": "2026-09-25T13:30:00.000Z",
+          "ultimo_ndvi": 0.662,
+          "talhao": "T02",
+          "media_ndvi": 0.478,
+          "variacao": 0.35
+        },
+        {
+          "leituras": 8,
+          "primeira_data": "2026-06-05T13:30:00.000Z",
+          "primeiro_ndvi": 0.295,
+          "ultima_data": "2026-09-25T13:30:00.000Z",
+          "ultimo_ndvi": 0.645,
+          "talhao": "T03",
+          "media_ndvi": 0.453,
+          "variacao": 0.35
+        },
+        {
+          "leituras": 8,
+          "primeira_data": "2026-06-05T13:30:00.000Z",
+          "primeiro_ndvi": 0.237,
+          "ultima_data": "2026-09-25T13:30:00.000Z",
+          "ultimo_ndvi": 0.643,
+          "talhao": "T04",
+          "media_ndvi": 0.433,
+          "variacao": 0.406
+        },
+        {
+          "leituras": 8,
+          "primeira_data": "2026-06-05T13:30:00.000Z",
+          "primeiro_ndvi": 0.49,
+          "ultima_data": "2026-09-25T13:30:00.000Z",
+          "ultimo_ndvi": 0.15,
+          "talhao": "T05",
+          "media_ndvi": 0.231,
+          "variacao": -0.34
+        },
+        {
+          "leituras": 8,
+          "primeira_data": "2026-06-05T13:30:00.000Z",
+          "primeiro_ndvi": 0.446,
+          "ultima_data": "2026-09-25T13:30:00.000Z",
+          "ultimo_ndvi": 0.159,
+          "talhao": "T06",
+          "media_ndvi": 0.263,
+          "variacao": -0.287
+        }
+      ]
+    },
+    "q3_alertas_solo_seco": {
+      "question": "Quais talhões concentraram alertas de solo seco e quantos já foram resolvidos?",
+      "service": "MongoDB",
+      "collection": "alertas",
+      "pipeline": [
+        {
+          "$match": {
+            "tipo": "solo_seco"
+          }
+        },
+        {
+          "$group": {
+            "_id": "$talhao",
+            "ocorrencias": {
+              "$sum": 1
+            },
+            "resolvidas": {
+              "$sum": {
+                "$cond": [
+                  "$resolvido",
+                  1,
+                  0
+                ]
+              }
+            },
+            "primeira": {
+              "$min": "$ts"
+            },
+            "ultima": {
+              "$max": "$ts"
+            }
+          }
+        },
+        {
+          "$project": {
+            "_id": 0,
+            "talhao": "$_id",
+            "ocorrencias": 1,
+            "resolvidas": 1,
+            "primeira": 1,
+            "ultima": 1
+          }
+        },
+        {
+          "$sort": {
+            "ocorrencias": -1,
+            "talhao": 1
+          }
+        }
+      ],
+      "result": [
+        {
+          "ocorrencias": 47,
+          "resolvidas": 47,
+          "primeira": "2026-08-10T22:15:00.000Z",
+          "ultima": "2026-09-29T00:00:00.000Z",
+          "talhao": "T01"
+        },
+        {
+          "ocorrencias": 47,
+          "resolvidas": 47,
+          "primeira": "2026-08-10T21:45:00.000Z",
+          "ultima": "2026-09-29T00:00:00.000Z",
+          "talhao": "T02"
+        },
+        {
+          "ocorrencias": 45,
+          "resolvidas": 45,
+          "primeira": "2026-08-11T03:00:00.000Z",
+          "ultima": "2026-09-29T00:00:00.000Z",
+          "talhao": "T04"
+        },
+        {
+          "ocorrencias": 35,
+          "resolvidas": 35,
+          "primeira": "2026-08-19T15:45:00.000Z",
+          "ultima": "2026-09-29T00:00:00.000Z",
+          "talhao": "T03"
+        },
+        {
+          "ocorrencias": 33,
+          "resolvidas": 33,
+          "primeira": "2026-08-20T17:00:00.000Z",
+          "ultima": "2026-09-29T00:00:00.000Z",
+          "talhao": "T05"
+        },
+        {
+          "ocorrencias": 33,
+          "resolvidas": 33,
+          "primeira": "2026-08-20T03:15:00.000Z",
+          "ultima": "2026-09-29T00:00:00.000Z",
+          "talhao": "T06"
+        }
+      ]
+    },
+    "q4_telemetria_maquinas": {
+      "question": "Quais máquinas têm telemetria e qual foi seu perfil operacional no período?",
+      "service": "MongoDB",
+      "collection": "telemetria_maquinas",
+      "pipeline": [
+        {
+          "$match": {
+            "ts": {
+              "$type": "date"
+            }
+          }
+        },
+        {
+          "$group": {
+            "_id": "$maquina",
+            "registros": {
+              "$sum": 1
+            },
+            "inicio": {
+              "$min": "$ts"
+            },
+            "fim": {
+              "$max": "$ts"
+            },
+            "velocidade_media_kmh": {
+              "$avg": "$velocidade_kmh"
+            },
+            "combustivel_medio_pct": {
+              "$avg": "$combustivel_pct"
+            },
+            "temperatura_maxima_c": {
+              "$max": "$temp_motor_c"
+            }
+          }
+        },
+        {
+          "$project": {
+            "_id": 0,
+            "maquina": "$_id",
+            "registros": 1,
+            "inicio": 1,
+            "fim": 1,
+            "velocidade_media_kmh": {
+              "$round": [
+                "$velocidade_media_kmh",
+                2
+              ]
+            },
+            "combustivel_medio_pct": {
+              "$round": [
+                "$combustivel_medio_pct",
+                2
+              ]
+            },
+            "temperatura_maxima_c": 1
+          }
+        },
+        {
+          "$sort": {
+            "registros": -1,
+            "maquina": 1
+          }
+        }
+      ],
+      "result": [
+        {
+          "registros": 3685,
+          "inicio": "2026-07-04T10:00:00.000Z",
+          "fim": "2026-09-21T11:25:00.000Z",
+          "temperatura_maxima_c": 97.3,
+          "maquina": "M05",
+          "velocidade_media_kmh": 5,
+          "combustivel_medio_pct": 56.46
+        },
+        {
+          "registros": 1573,
+          "inicio": "2026-06-06T10:30:00.000Z",
+          "fim": "2026-09-20T12:32:00.000Z",
+          "temperatura_maxima_c": 95.9,
+          "maquina": "M03",
+          "velocidade_media_kmh": 15.98,
+          "combustivel_medio_pct": 81.09
+        },
+        {
+          "registros": 524,
+          "inicio": "2026-08-13T10:00:00.000Z",
+          "fim": "2026-08-26T15:30:00.000Z",
+          "temperatura_maxima_c": 95.9,
+          "maquina": "M01",
+          "velocidade_media_kmh": 6.99,
+          "combustivel_medio_pct": 85.92
+        }
+      ]
+    },
+    "q5_umidade_atual": {
+      "question": "Qual é a umidade atual do solo em 10 cm e 30 cm em cada talhão monitorado?",
+      "service": "Redis",
+      "command": "SCAN MATCH grupo4:sensor:SS-*; HGETALL <chave>",
+      "result": [
+        {
+          "key": "grupo4:sensor:SS-01",
+          "ts": "2026-10-08T00:26:37Z",
+          "bateria_pct": "81.2",
+          "umidade_10cm_pct": "10.83",
+          "umidade_30cm_pct": "11.98",
+          "temp_solo_c": "22.06",
+          "condutividade_ds_m": "0.697"
+        },
+        {
+          "key": "grupo4:sensor:SS-02",
+          "ts": "2026-10-08T00:26:37Z",
+          "bateria_pct": "81.2",
+          "umidade_10cm_pct": "10.72",
+          "umidade_30cm_pct": "12.09",
+          "temp_solo_c": "22.43",
+          "condutividade_ds_m": "0.485"
+        },
+        {
+          "key": "grupo4:sensor:SS-03",
+          "ts": "2026-10-08T00:26:37Z",
+          "bateria_pct": "81.2",
+          "umidade_10cm_pct": "10.89",
+          "umidade_30cm_pct": "11.94",
+          "temp_solo_c": "22.8",
+          "condutividade_ds_m": "0.875"
+        },
+        {
+          "key": "grupo4:sensor:SS-04",
+          "ts": "2026-10-08T00:26:37Z",
+          "bateria_pct": "75.5",
+          "umidade_10cm_pct": "10.72",
+          "umidade_30cm_pct": "11.95",
+          "temp_solo_c": "22.2",
+          "condutividade_ds_m": "0.76"
+        },
+        {
+          "key": "grupo4:sensor:SS-05",
+          "ts": "2026-10-08T00:26:37Z",
+          "bateria_pct": "81.2",
+          "umidade_10cm_pct": "10.95",
+          "umidade_30cm_pct": "12.05",
+          "temp_solo_c": "22.63",
+          "condutividade_ds_m": "0.724"
+        },
+        {
+          "key": "grupo4:sensor:SS-06",
+          "ts": "2026-10-08T00:26:37Z",
+          "bateria_pct": "81.2",
+          "umidade_10cm_pct": "10.98",
+          "umidade_30cm_pct": "11.92",
+          "temp_solo_c": "22.31",
+          "condutividade_ds_m": "0.521"
+        }
+      ]
+    }
+  },
+  "quality": {
+    "mariadb_datas_futuras": {
+      "query": "SELECT COUNT(*), MIN(campo), MAX(campo) FROM tabela WHERE campo > CURRENT_DATE()",
+      "result": {
+        "estoque_movimento.data": {
+          "afetados": 20,
+          "menor_data": "2026-10-17T03:00:00.000Z",
+          "maior_data": "2027-01-18T03:00:00.000Z"
+        },
+        "operacao.data_inicio": {
+          "afetados": 10,
+          "menor_data": "2026-10-17T10:30:00.000Z",
+          "maior_data": "2027-01-18T10:30:00.000Z"
+        },
+        "safra.data_plantio": {
+          "afetados": 2,
+          "menor_data": "2026-10-17T03:00:00.000Z",
+          "maior_data": "2026-10-19T03:00:00.000Z"
+        },
+        "safra.data_colheita": {
+          "afetados": 0,
+          "menor_data": null,
+          "maior_data": null
+        },
+        "venda.data": {
+          "afetados": 0,
+          "menor_data": null,
+          "maior_data": null
+        }
+      },
+      "detail": {
+        "estoque_por_tipo": [
+          {
+            "tipo": "saida",
+            "afetados": 20
+          }
+        ],
+        "operacoes_por_tipo": [
+          {
+            "tipo": "adubacao",
+            "afetados": 2
+          },
+          {
+            "tipo": "plantio",
+            "afetados": 2
+          },
+          {
+            "tipo": "pulverizacao",
+            "afetados": 6
+          }
+        ],
+        "safras_por_status": [
+          {
+            "status": "planejada",
+            "afetados": 2
+          }
+        ]
+      }
+    },
+    "mariadb_inconsistencias": {
+      "result": {
+        "operacao_fim_antes_inicio": {
+          "afetados": 0
+        },
+        "safra_colheita_antes_plantio": {
+          "afetados": 0
+        },
+        "talhao_area_nao_positiva": {
+          "afetados": 0
+        },
+        "movimento_quantidade_nao_positiva": {
+          "afetados": 0
+        },
+        "venda_quantidade_ou_preco_nao_positivo": {
+          "afetados": 0
+        },
+        "codigos_talhao_duplicados": {
+          "afetados": 0
+        }
+      }
+    },
+    "mongodb": {
+      "leituras_campos_essenciais_ausentes": {
+        "filter": {
+          "$or": [
+            {
+              "sensor": {
+                "$exists": false
+              }
+            },
+            {
+              "ts": {
+                "$exists": false
+              }
+            },
+            {
+              "tipo": {
+                "$exists": false
+              }
+            },
+            {
+              "valores": {
+                "$exists": false
+              }
+            }
+          ]
+        },
+        "afetados": 0
+      },
+      "leituras_bateria_fora_0_100": {
+        "filter": {
+          "bateria_pct": {
+            "$not": {
+              "$gte": 0,
+              "$lte": 100
+            }
+          }
+        },
+        "afetados": 0
+      },
+      "leituras_umidade_fora_0_100": {
+        "filter": {
+          "$or": [
+            {
+              "valores.umidade_ar_pct": {
+                "$lt": 0
+              }
+            },
+            {
+              "valores.umidade_ar_pct": {
+                "$gt": 100
+              }
+            },
+            {
+              "valores.umidade_10cm_pct": {
+                "$lt": 0
+              }
+            },
+            {
+              "valores.umidade_10cm_pct": {
+                "$gt": 100
+              }
+            },
+            {
+              "valores.umidade_30cm_pct": {
+                "$lt": 0
+              }
+            },
+            {
+              "valores.umidade_30cm_pct": {
+                "$gt": 100
+              }
+            }
+          ]
+        },
+        "afetados": 12
+      },
+      "imagens_ndvi_fora_menos1_1": {
+        "filter": {
+          "$or": [
+            {
+              "ndvi_medio": {
+                "$lt": -1
+              }
+            },
+            {
+              "ndvi_medio": {
+                "$gt": 1
+              }
+            }
+          ]
+        },
+        "afetados": 0
+      },
+      "imagens_nuvem_fora_0_100": {
+        "filter": {
+          "$or": [
+            {
+              "cobertura_nuvem_pct": {
+                "$lt": 0
+              }
+            },
+            {
+              "cobertura_nuvem_pct": {
+                "$gt": 100
+              }
+            }
+          ]
+        },
+        "afetados": 0
+      },
+      "telemetria_metricas_invalidas": {
+        "filter": {
+          "$or": [
+            {
+              "velocidade_kmh": {
+                "$lt": 0
+              }
+            },
+            {
+              "combustivel_pct": {
+                "$lt": 0
+              }
+            },
+            {
+              "combustivel_pct": {
+                "$gt": 100
+              }
+            },
+            {
+              "rpm": {
+                "$lt": 0
+              }
+            }
+          ]
+        },
+        "afetados": 0
+      },
+      "alertas_campos_essenciais_ausentes": {
+        "filter": {
+          "$or": [
+            {
+              "ts": {
+                "$exists": false
+              }
+            },
+            {
+              "tipo": {
+                "$exists": false
+              }
+            },
+            {
+              "severidade": {
+                "$exists": false
+              }
+            },
+            {
+              "mensagem": {
+                "$exists": false
+              }
+            }
+          ]
+        },
+        "afetados": 0
+      },
+      "duplicidade_leituras_sensor_ts": {
+        "_id": null,
+        "grupos_duplicados": 322,
+        "registros_nos_grupos": 644,
+        "registros_excedentes": 322
+      },
+      "duplicidade_imagens_talhao_data_tipo": {
+        "grupos_duplicados": 0,
+        "registros_excedentes": 0
+      },
+      "duplicidade_telemetria_maquina_ts": {
+        "grupos_duplicados": 0,
+        "registros_excedentes": 0
+      },
+      "duplicidade_alertas_ts_tipo_sensor": {
+        "grupos_duplicados": 0,
+        "registros_excedentes": 0
+      },
+      "umidade_por_campo": {
+        "_id": null,
+        "menor_ar": 31.2,
+        "maior_ar": 99,
+        "menor_10cm": -1,
+        "maior_10cm": 999,
+        "menor_30cm": 11.38,
+        "maior_30cm": 38.21,
+        "ar_invalidos": 0,
+        "solo_10cm_invalidos": 12,
+        "solo_30cm_invalidos": 0
+      },
+      "amostra_umidade_invalida": [
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-06-12T23:00:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": -1,
+            "umidade_30cm_pct": 31.42,
+            "temp_solo_c": 22.05,
+            "condutividade_ds_m": 0.522
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-07-26T13:30:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": 999,
+            "umidade_30cm_pct": 23.94,
+            "temp_solo_c": 17.46,
+            "condutividade_ds_m": 0.543
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-07-28T19:15:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": 999,
+            "umidade_30cm_pct": 23.31,
+            "temp_solo_c": 22.01,
+            "condutividade_ds_m": 0.506
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-08-08T18:00:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": -1,
+            "umidade_30cm_pct": 17.4,
+            "temp_solo_c": 24.1,
+            "condutividade_ds_m": 0.509
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-08-16T03:30:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": -1,
+            "umidade_30cm_pct": 14.82,
+            "temp_solo_c": 19.49,
+            "condutividade_ds_m": 0.489
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-09-03T15:45:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": -1,
+            "umidade_30cm_pct": 11.96,
+            "temp_solo_c": 26.06,
+            "condutividade_ds_m": 0.488
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-09-04T17:00:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": 999,
+            "umidade_30cm_pct": 11.94,
+            "temp_solo_c": 27.41,
+            "condutividade_ds_m": 0.517
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-09-05T17:45:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": 999,
+            "umidade_30cm_pct": 12.04,
+            "temp_solo_c": 27.05,
+            "condutividade_ds_m": 0.484
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-09-06T11:15:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": 999,
+            "umidade_30cm_pct": 12.01,
+            "temp_solo_c": 20.73,
+            "condutividade_ds_m": 0.536
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-09-07T19:00:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": -1,
+            "umidade_30cm_pct": 12.09,
+            "temp_solo_c": 28.35,
+            "condutividade_ds_m": 0.469
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-09-19T18:00:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": 999,
+            "umidade_30cm_pct": 11.97,
+            "temp_solo_c": 27.05,
+            "condutividade_ds_m": 0.555
+          }
+        },
+        {
+          "sensor": "SS-02",
+          "tipo": "sonda_solo",
+          "ts": "2026-09-19T18:00:00.000Z",
+          "valores": {
+            "umidade_10cm_pct": 999,
+            "umidade_30cm_pct": 11.97,
+            "temp_solo_c": 27.05,
+            "condutividade_ds_m": 0.555
+          }
+        }
+      ],
+      "amostra_duplicidade_leituras": [
+        {
+          "_id": {
+            "sensor": "SS-04",
+            "ts": "2026-06-01T00:45:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-04",
+            "ts": "2026-06-01T03:15:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "EST-01",
+            "ts": "2026-06-02T09:15:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-05",
+            "ts": "2026-06-02T09:30:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-04",
+            "ts": "2026-06-02T12:45:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-04",
+            "ts": "2026-06-02T22:30:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "EST-01",
+            "ts": "2026-06-03T20:45:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-01",
+            "ts": "2026-06-04T07:00:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-03",
+            "ts": "2026-06-04T10:15:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-04",
+            "ts": "2026-06-04T13:15:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-06",
+            "ts": "2026-06-05T15:15:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-02",
+            "ts": "2026-06-07T03:45:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-05",
+            "ts": "2026-06-07T09:15:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "EST-01",
+            "ts": "2026-06-07T20:30:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-06",
+            "ts": "2026-06-08T10:45:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-01",
+            "ts": "2026-06-08T18:00:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-01",
+            "ts": "2026-06-09T09:00:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-02",
+            "ts": "2026-06-09T21:45:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "SS-05",
+            "ts": "2026-06-10T04:30:00.000Z"
+          },
+          "quantidade": 2
+        },
+        {
+          "_id": {
+            "sensor": "EST-01",
+            "ts": "2026-06-10T06:30:00.000Z"
+          },
+          "quantidade": 2
+        }
+      ],
+      "imagens_por_satelite": [
+        {
+          "_id": "Sentinel-2 (simulado)",
+          "documentos": 48
+        }
+      ]
+    },
+    "minio_mongodb": {
+      "referencias_mongo_sem_objeto": [],
+      "pngs_minio_sem_catalogo_mongo": [],
+      "documentos_bucket_divergente": 0
+    }
+  },
+  "inventory": {
+    "mongodb": {
+      "leituras": {
+        "_id": null,
+        "total": 81100,
+        "minimo": "2026-06-01T00:00:00.000Z",
+        "maximo": "2026-10-07T23:47:36.000Z"
+      },
+      "telemetria_maquinas": {
+        "_id": null,
+        "total": 5782,
+        "minimo": "2026-06-06T10:30:00.000Z",
+        "maximo": "2026-09-21T11:25:00.000Z"
+      },
+      "alertas": {
+        "_id": null,
+        "total": 244,
+        "minimo": "2026-06-01T19:30:00.000Z",
+        "maximo": "2026-09-29T00:00:00.000Z"
+      },
+      "imagens": {
+        "_id": null,
+        "total": 48,
+        "minimo": "2026-06-05T13:30:00.000Z",
+        "maximo": "2026-09-25T13:30:00.000Z"
+      }
+    },
+    "mariadb": {
+      "cliente": 6,
+      "cultura": 5,
+      "estoque_movimento": 300,
+      "fazenda": 1,
+      "funcionario": 10,
+      "insumo": 13,
+      "maquina": 6,
+      "operacao": 137,
+      "safra": 30,
+      "sensor": 7,
+      "talhao": 6,
+      "venda": 38
+    },
+    "redis": {
+      "keys": 76,
+      "scopedKeys": 19,
+      "ttl": {
+        "semExpiracao": 19,
+        "comExpiracao": 0
+      }
+    },
+    "minio": {
+      "bucket": "grupo4",
+      "objects": 49,
+      "bytes": 3299616,
+      "byExtension": {
+        "csv": {
+          "objects": 1,
+          "bytes": 681
+        },
+        "png": {
+          "objects": 48,
+          "bytes": 3298935
+        }
+      }
+    }
+  }
+}

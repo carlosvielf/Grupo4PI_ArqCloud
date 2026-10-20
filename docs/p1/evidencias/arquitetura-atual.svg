@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#315b45"/></marker>
+    <style>
+      .title{font:700 38px Arial,sans-serif;fill:#10251c}.subtitle{font:20px Arial,sans-serif;fill:#516158}
+      .box{fill:#fff;stroke:#b8c9bf;stroke-width:3;rx:18}.accent{fill:#eaf5ee;stroke:#4c8a68}.external{fill:#fff8e8;stroke:#c99a3b}
+      .head{font:700 23px Arial,sans-serif;fill:#143c2b}.text{font:18px Arial,sans-serif;fill:#34493e}.small{font:16px Arial,sans-serif;fill:#617067}
+      .line{stroke:#315b45;stroke-width:4;fill:none;marker-end:url(#arrow)}.dash{stroke-dasharray:12 9}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f5f8f6"/>
+  <text x="70" y="70" class="title">Arquitetura atual comprovada — Monitora.G4</text>
+  <text x="70" y="105" class="subtitle">Fluxos observados no código e nos serviços em 07/10/2026</text>
+
+  <rect x="60" y="180" width="260" height="150" class="box external"/>
+  <text x="90" y="225" class="head">Sensores da fazenda</text>
+  <text x="90" y="265" class="text">EST-01 e SS-01…SS-06</text>
+  <text x="90" y="298" class="small">origem MQTT observada</text>
+
+  <rect x="420" y="180" width="270" height="150" class="box accent"/>
+  <text x="450" y="225" class="head">Broker MQTT</text>
+  <text x="450" y="265" class="text">fazenda/grupo4/#</text>
+  <text x="450" y="298" class="small">TCP 1884 · QoS 0</text>
+
+  <rect x="790" y="150" width="330" height="210" class="box accent"/>
+  <text x="825" y="205" class="head">Backend Node.js</text>
+  <text x="825" y="245" class="text">API REST + proxy MinIO</text>
+  <text x="825" y="280" class="text">assinante MQTT + SSE</text>
+  <text x="825" y="315" class="small">porta local 3001</text>
+
+  <rect x="1250" y="180" width="280" height="150" class="box"/>
+  <text x="1285" y="225" class="head">Frontend React/Vite</text>
+  <text x="1285" y="265" class="text">9 rotas da SPA</text>
+  <text x="1285" y="298" class="small">HTTP JSON + EventSource</text>
+
+  <path d="M320 255 H420" class="line"/><path d="M690 255 H790" class="line"/><path d="M1120 255 H1250" class="line"/>
+  <text x="334" y="238" class="small">publica</text><text x="705" y="238" class="small">assina</text><text x="1138" y="238" class="small">REST/SSE</text>
+
+  <rect x="70" y="510" width="250" height="190" class="box"/>
+  <text x="105" y="555" class="head">MariaDB grupo4</text>
+  <text x="105" y="593" class="text">12 tabelas</text>
+  <text x="105" y="625" class="small">cadastros, safras,</text><text x="105" y="650" class="small">operações e vendas</text>
+  <text x="105" y="680" class="small">porta 3307</text>
+
+  <rect x="380" y="510" width="250" height="190" class="box"/>
+  <text x="415" y="555" class="head">MongoDB grupo4</text>
+  <text x="415" y="593" class="text">4 coleções</text>
+  <text x="415" y="625" class="small">leituras, telemetria,</text><text x="415" y="650" class="small">alertas e imagens</text>
+  <text x="415" y="680" class="small">porta 27018</text>
+
+  <rect x="690" y="510" width="250" height="190" class="box"/>
+  <text x="725" y="555" class="head">Redis</text>
+  <text x="725" y="593" class="text">19 chaves grupo4:*</text>
+  <text x="725" y="625" class="small">estado atual, stream,</text><text x="725" y="650" class="small">alertas e ranking</text>
+  <text x="725" y="680" class="small">porta 6380</text>
+
+  <rect x="1000" y="510" width="250" height="190" class="box"/>
+  <text x="1035" y="555" class="head">MinIO grupo4</text>
+  <text x="1035" y="593" class="text">49 objetos</text>
+  <text x="1035" y="625" class="small">48 PNGs NDVI +</text><text x="1035" y="650" class="small">1 laudo CSV</text>
+  <text x="1035" y="680" class="small">porta 9010</text>
+
+  <rect x="1310" y="510" width="220" height="190" class="box external"/>
+  <text x="1340" y="550" class="head">Carga original</text>
+  <text x="1340" y="588" class="text">não versionada</text>
+  <text x="1340" y="625" class="small">origem dos dados já</text><text x="1340" y="650" class="small">persistidos não consta</text><text x="1340" y="675" class="small">no repositório</text>
+
+  <path d="M850 360 C800 430 230 430 200 510" class="line"/>
+  <path d="M910 360 C880 430 520 430 505 510" class="line"/>
+  <path d="M980 360 C990 430 820 440 815 510" class="line"/>
+  <path d="M1050 360 C1090 430 1125 440 1125 510" class="line"/>
+  <path d="M790 300 C720 370 575 400 540 510" class="line dash"/>
+  <text x="590" y="415" class="small">persistência idempotente quando habilitada</text>
+  <path d="M1310 605 H1250" class="line dash"/><path d="M1310 605 C1270 760 515 775 505 700" class="line dash"/>
+  <text x="70" y="820" class="small">Nota: o código consulta MariaDB, MongoDB, Redis e MinIO. A origem/carga inicial desses acervos externos não foi localizada no repositório.</text>
+</svg>

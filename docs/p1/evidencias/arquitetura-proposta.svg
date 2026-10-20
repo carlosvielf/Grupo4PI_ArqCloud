@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#315b45"/></marker>
+    <style>
+      .title{font:700 38px Arial,sans-serif;fill:#10251c}.subtitle{font:20px Arial,sans-serif;fill:#516158}
+      .box{fill:#fff;stroke:#b8c9bf;stroke-width:3;rx:18}.accent{fill:#eaf5ee;stroke:#4c8a68}.guard{fill:#eef4ff;stroke:#6688b5}.external{fill:#fff8e8;stroke:#c99a3b}
+      .head{font:700 23px Arial,sans-serif;fill:#143c2b}.text{font:18px Arial,sans-serif;fill:#34493e}.small{font:16px Arial,sans-serif;fill:#617067}
+      .line{stroke:#315b45;stroke-width:4;fill:none;marker-end:url(#arrow)}.dash{stroke-dasharray:12 9}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f5f8f6"/>
+  <text x="70" y="70" class="title">Arquitetura proposta até a P2 — monólito modular</text>
+  <text x="70" y="105" class="subtitle">Um deploy da aplicação, serviços de dados externos e regras explícitas de qualidade</text>
+
+  <rect x="60" y="190" width="250" height="150" class="box external"/>
+  <text x="95" y="235" class="head">Sensores</text><text x="95" y="275" class="text">telemetria de campo</text><text x="95" y="307" class="small">publicação periódica</text>
+  <rect x="400" y="190" width="250" height="150" class="box accent"/>
+  <text x="435" y="235" class="head">MQTT externo</text><text x="435" y="275" class="text">fazenda/grupo4/#</text><text x="435" y="307" class="small">porta 1884</text>
+  <path d="M310 265 H400" class="line"/>
+
+  <rect x="740" y="135" width="500" height="310" class="box accent"/>
+  <text x="785" y="185" class="head">Container monitora-g4 · porta 3001</text>
+  <rect x="785" y="220" width="190" height="90" class="box"/><text x="815" y="255" class="text">React compilado</text><text x="815" y="283" class="small">arquivos estáticos</text>
+  <rect x="1000" y="220" width="195" height="90" class="box"/><text x="1025" y="255" class="text">API Node modular</text><text x="1025" y="283" class="small">REST + SSE</text>
+  <rect x="785" y="330" width="410" height="80" class="box guard"/><text x="815" y="365" class="text">Validação e tratamento de qualidade</text><text x="815" y="392" class="small">duplicatas, -1/999, datas futuras e erros parciais</text>
+  <path d="M650 265 H740" class="line"/><text x="667" y="245" class="small">assina</text>
+
+  <rect x="1320" y="190" width="220" height="150" class="box"/>
+  <text x="1355" y="235" class="head">Navegador</text><text x="1355" y="275" class="text">HTTPS / JSON</text><text x="1355" y="307" class="small">SSE para atualização</text>
+  <path d="M1240 265 H1320" class="line"/>
+
+  <rect x="80" y="580" width="240" height="170" class="box"/><text x="115" y="625" class="head">MariaDB</text><text x="115" y="662" class="text">dados relacionais</text><text x="115" y="697" class="small">grupo4 · 3307</text>
+  <rect x="380" y="580" width="240" height="170" class="box"/><text x="415" y="625" class="head">MongoDB</text><text x="415" y="662" class="text">históricos/eventos</text><text x="415" y="697" class="small">grupo4 · 27018</text>
+  <rect x="680" y="580" width="240" height="170" class="box"/><text x="715" y="625" class="head">Redis</text><text x="715" y="662" class="text">estado recente</text><text x="715" y="697" class="small">grupo4:* · 6380</text>
+  <rect x="980" y="580" width="240" height="170" class="box"/><text x="1015" y="625" class="head">MinIO</text><text x="1015" y="662" class="text">objetos binários</text><text x="1015" y="697" class="small">grupo4 · 9010</text>
+  <rect x="1280" y="580" width="240" height="170" class="box guard"/><text x="1315" y="625" class="head">Secrets do runtime</text><text x="1315" y="662" class="text">variáveis de ambiente</text><text x="1315" y="697" class="small">nunca no bundle/Git</text>
+
+  <path d="M900 445 C830 510 220 510 200 580" class="line"/>
+  <path d="M960 445 C900 520 510 520 500 580" class="line"/>
+  <path d="M1030 445 C1010 520 805 520 800 580" class="line"/>
+  <path d="M1100 445 C1140 510 1100 535 1100 580" class="line"/>
+  <path d="M1395 580 C1350 520 1170 500 1140 445" class="line dash"/>
+  <text x="70" y="835" class="small">Decisão: monólito modular reduz deploy, coordenação e operação para uma equipe acadêmica de quatro pessoas e um prazo de seis semanas.</text>
+</svg>
