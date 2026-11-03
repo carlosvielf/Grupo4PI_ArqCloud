@@ -1,0 +1,56 @@
+services:
+  api:
+    build:
+      context: .
+      target: api
+    restart: unless-stopped
+    ports:
+      - "8088:8088"
+    environment:
+      NODE_ENV: production
+      API_HOST: 0.0.0.0
+      API_PORT: 8088
+      MARIADB_HOST: ${MARIADB_HOST:?MARIADB_HOST não configurado}
+      MARIADB_PORT: ${MARIADB_PORT:?MARIADB_PORT não configurado}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:?MARIADB_DATABASE não configurado}
+      MARIADB_USER: ${MARIADB_USER:?MARIADB_USER não configurado}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?MARIADB_PASSWORD não configurado}
+      MONGODB_HOST: ${MONGODB_HOST:?MONGODB_HOST não configurado}
+      MONGODB_PORT: ${MONGODB_PORT:?MONGODB_PORT não configurado}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:?MONGODB_DATABASE não configurado}
+      MONGODB_USER: ${MONGODB_USER:?MONGODB_USER não configurado}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:?MONGODB_PASSWORD não configurado}
+      MONGODB_AUTH_SOURCE: ${MONGODB_AUTH_SOURCE:?MONGODB_AUTH_SOURCE não configurado}
+      REDIS_HOST: ${REDIS_HOST:?REDIS_HOST não configurado}
+      REDIS_PORT: ${REDIS_PORT:?REDIS_PORT não configurado}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD não configurado}
+      REDIS_PREFIX: ${REDIS_PREFIX:-grupo4:}
+      MQTT_HOST: ${MQTT_HOST:?MQTT_HOST não configurado}
+      MQTT_PORT: ${MQTT_PORT:?MQTT_PORT não configurado}
+      MQTT_USER: ${MQTT_USER:?MQTT_USER não configurado}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:?MQTT_PASSWORD não configurado}
+      MQTT_TOPIC: ${MQTT_TOPIC:-fazenda/grupo4/#}
+      MQTT_PERSIST_ENABLED: ${MQTT_PERSIST_ENABLED:-false}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT:?MINIO_ENDPOINT não configurado}
+      MINIO_PORT: ${MINIO_PORT:?MINIO_PORT não configurado}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:?MINIO_ACCESS_KEY não configurado}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:?MINIO_SECRET_KEY não configurado}
+      MINIO_BUCKET: ${MINIO_BUCKET:-grupo4}
+      MINIO_USE_SSL: ${MINIO_USE_SSL:-false}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8088/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  web:
+    build:
+      context: .
+      target: web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "8087:80"
